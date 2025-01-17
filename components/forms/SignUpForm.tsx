@@ -1,14 +1,20 @@
-import React from "react";
+"use client";
 import Link from "next/link";
+import { useActionState } from "react";
+import { signup } from "@/actions/signup";
 
 const SignUpForm = () => {
+  const [state, action, pending] = useActionState(signup, undefined);
+
+  console.log(state);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-lg p-8 space-y-6 bg-white shadow-md rounded-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800">
           회원가입
         </h2>
-        <form className="space-y-4">
+        <form className="space-y-4" action={action}>
           {/* 이름 입력 */}
           <div>
             <label
@@ -21,10 +27,17 @@ const SignUpForm = () => {
               type="text"
               id="name"
               name="name"
-              required
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="이름을 입력하세요"
+              autoComplete={"name"}
             />
+            {state?.errors?.name && (
+              <p className="text-red-500 text-sm mt-2">
+                {state.errors.name.map((item) => (
+                  <div key={item}>- {item}</div>
+                ))}
+              </p>
+            )}
           </div>
           {/* 이메일 입력 */}
           <div>
@@ -38,10 +51,17 @@ const SignUpForm = () => {
               type="email"
               id="email"
               name="email"
-              required
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="이메일을 입력하세요"
+              autoComplete={"email"}
             />
+            {state?.errors?.email && (
+              <p className="text-red-500 text-sm mt-2">
+                {state.errors.email.map((item) => (
+                  <div key={item}>- {item}</div>
+                ))}
+              </p>
+            )}
           </div>
           {/* 비밀번호 입력 */}
           <div>
@@ -55,33 +75,29 @@ const SignUpForm = () => {
               type="password"
               id="password"
               name="password"
-              required
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="비밀번호를 입력하세요"
+              autoComplete={"new-password"}
             />
+            {state?.errors?.password && (
+              <div>
+                <ul>
+                  {state.errors.password.map((error) => (
+                    <li key={error} className="text-red-500 text-sm mt-2">
+                      - {error}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
-          {/* 비밀번호 확인 */}
-          <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700"
-            >
-              비밀번호 확인
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              required
-              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="비밀번호를 다시 입력하세요"
-            />
-          </div>
+
           {/* 회원가입 버튼 */}
           <div>
             <button
               type="submit"
-              className="w-full px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+              disabled={pending}
             >
               회원가입
             </button>
