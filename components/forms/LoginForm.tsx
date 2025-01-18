@@ -1,11 +1,18 @@
+"use client";
 import Link from "next/link";
+import { useActionState } from "react";
+import { signIn } from "@/actions/signIn";
 
 const LoginForm = () => {
+  const [state, action, pending] = useActionState(signIn, undefined);
+
+  console.log(state);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800">로그인</h2>
-        <form className="space-y-4">
+        <form className="space-y-4" action={action}>
           {/* 이메일 입력 */}
           <div>
             <label
@@ -40,11 +47,20 @@ const LoginForm = () => {
               placeholder="비밀번호를 입력하세요"
             />
           </div>
+          {/* 에러 메시지 */}
+          {state?.errors?.email && (
+            <div className="text-red-500 text-sm">
+              {state.errors.email.map((item) => (
+                <div key={item}>- {item}</div>
+              ))}
+            </div>
+          )}
           {/* 로그인 버튼 */}
           <div>
             <button
               type="submit"
               className="w-full px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={pending}
             >
               로그인
             </button>
