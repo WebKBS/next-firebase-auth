@@ -23,13 +23,7 @@ export const signup = async (prevState: FormState, formData: FormData) => {
   }
 
   try {
-    const response = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    );
-
-    console.log(response);
+    await createUserWithEmailAndPassword(auth, email, password);
   } catch (error) {
     console.error(error);
     return {

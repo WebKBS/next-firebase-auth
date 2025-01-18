@@ -6,7 +6,6 @@ import { signup } from "@/actions/signup";
 const SignUpForm = () => {
   const [state, action, pending] = useActionState(signup, undefined);
 
-  console.log(state);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

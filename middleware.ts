@@ -12,7 +12,7 @@ export default async function middleware(req: NextRequest) {
   const isPublicRoute = publicRoutes.includes(path);
 
   // 3. 세션 쿠키 가져오기
-  const session = (await cookies()).get("session")?.value;
+  const session = (await cookies()).get("session")?.value as string;
 
   // 4. 사용자가 인증되지 않은 경우 /login으로 리디렉션
   if (isProtectedRoute && !session) {
