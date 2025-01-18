@@ -6,8 +6,6 @@ import { signIn } from "@/actions/signIn";
 const LoginForm = () => {
   const [state, action, pending] = useActionState(signIn, undefined);
 
-  console.log(state);
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-lg">

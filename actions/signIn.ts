@@ -10,8 +10,6 @@ export const signIn = async (prevState: FormState, formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  console.log(email, password);
-
   try {
     const response = await signInWithEmailAndPassword(auth, email, password);
 
