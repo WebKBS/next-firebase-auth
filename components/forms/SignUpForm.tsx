@@ -32,11 +32,11 @@ const SignUpForm = () => {
               autoComplete={"name"}
             />
             {state?.errors?.name && (
-              <p className="text-red-500 text-sm mt-2">
+              <div className="text-red-500 text-sm mt-2">
                 {state.errors.name.map((item) => (
                   <div key={item}>- {item}</div>
                 ))}
-              </p>
+              </div>
             )}
           </div>
           {/* 이메일 입력 */}
@@ -56,11 +56,11 @@ const SignUpForm = () => {
               autoComplete={"email"}
             />
             {state?.errors?.email && (
-              <p className="text-red-500 text-sm mt-2">
+              <div className="text-red-500 text-sm mt-2">
                 {state.errors.email.map((item) => (
                   <div key={item}>- {item}</div>
                 ))}
-              </p>
+              </div>
             )}
           </div>
           {/* 비밀번호 입력 */}
