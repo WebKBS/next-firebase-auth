@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NEXT JS와 FIREBASE를 이용한 서버사이드(SSR) Authentication 구현
 
-## Getting Started
+## 개요
+NEXT JS와 FIREBASE를 이용하여 서버사이드(SSR) 환경에서 server action을 사용한 회원가입, 로그인, 로그아웃을 구현하는 예제입니다.
 
-First, run the development server:
+## Version
+- Next.js: 15.1.4
+- Firebase: 11.2.0
+
+## firebase 설치
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install firebase
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## firebase 설정
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```typescript
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+};
 
-## Learn More
+const app = initializeApp(firebaseConfig);
 
-To learn more about Next.js, take a look at the following resources:
+export const auth = getAuth(app);
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+나머지는 다음 블로그를 참고하세요.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[Next.js와 Firebase를 이용한 서버사이드(SSR) Authentication 구현](https://recodelog.com/blog/firebase/nextjs-authentication)
+```
