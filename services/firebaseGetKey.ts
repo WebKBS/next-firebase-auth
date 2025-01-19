@@ -1,19 +1,19 @@
-export async function getFirebasePublicKeys() {
-  try {
-    const response = await fetch(
-      "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com",
-      {
-        next: { revalidate: 3600 }, // 1시간마다 캐시 갱신
-      },
-    );
+"use server";
+interface FirebasePublicKeys {
+  [key: string]: string;
+}
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch public keys");
-    }
+export async function getFirebasePublicKeys(): Promise<FirebasePublicKeys> {
+  const response = await fetch(
+    "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com",
+    {
+      next: { revalidate: 3600 }, // 1시간마다 캐시 갱신
+    },
+  );
 
-    return response.json();
-  } catch (error) {
-    console.error("공개 키 가져오기 실패:", error);
-    throw error;
+  if (!response.ok) {
+    throw new Error("Failed to fetch Firebase public keys");
   }
+
+  return response.json();
 }

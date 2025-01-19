@@ -4,33 +4,42 @@ import { getFirebasePublicKeys } from "@/services/firebaseGetKey";
 
 export const verifyToken = async (token: string) => {
   try {
-    if (!token || typeof token !== "string") {
-      throw new Error("유효하지 않은 토큰: 문자열이 아닙니다.");
+    // 토큰이 없는 경우
+    if (!token) {
+      return null;
     }
 
     const publicKeys = await getFirebasePublicKeys();
-    const { kid } = jose.decodeProtectedHeader(token);
+    const decodedHeader = jose.decodeProtectedHeader(token);
+    // const decodedToken = jose.decodeJwt(token);
 
-    if (!kid || !publicKeys[kid]) {
-      throw new Error("유효한 키를 찾을 수 없습니다.");
+    // kid가 없는 경우
+    if (!decodedHeader.kid || !publicKeys[decodedHeader.kid]) {
+      console.error("Invalid key ID");
+      return null;
     }
 
-    // 직접 인증서를 사용
-    const publicKey = publicKeys[kid];
-    const { payload } = await jose.jwtVerify(
-      token,
-      await jose.importX509(publicKey, "RS256"),
-    );
+    try {
+      const publicKey = await jose.importX509(
+        publicKeys[decodedHeader.kid],
+        "RS256",
+      );
+      const { payload } = await jose.jwtVerify(token, publicKey);
 
-    const { exp } = payload;
-    const currentTime = Math.floor(Date.now() / 1000);
-    if (exp && exp < currentTime) {
-      throw new Error("토큰이 만료되었습니다.");
+      // 토큰 만료 확인
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (payload.exp && payload.exp < currentTime) {
+        console.error("Token has expired");
+        return null;
+      }
+
+      return payload;
+    } catch (error) {
+      console.error("Token verification failed:", error);
+      return null;
     }
-
-    return payload;
   } catch (error) {
-    console.error("토큰 확인 실패:", error);
+    console.error("Token processing failed:", error);
     return null;
   }
 };
