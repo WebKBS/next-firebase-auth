@@ -6,9 +6,6 @@ interface FirebasePublicKeys {
 export async function getFirebasePublicKeys(): Promise<FirebasePublicKeys> {
   const response = await fetch(
     "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com",
-    {
-      next: { revalidate: 3600 }, // 1시간마다 캐시 갱신
-    },
   );
 
   if (!response.ok) {
