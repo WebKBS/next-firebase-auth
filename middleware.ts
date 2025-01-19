@@ -1,7 +1,7 @@
 // middleware.ts
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { verifyToken } from "@/lib/verifyIdToken";
+import { verifyToken } from "@/lib/verifyToken";
 
 // 공개 경로만 정의
 const publicRoutes = ["/login", "/signup", "/"];
